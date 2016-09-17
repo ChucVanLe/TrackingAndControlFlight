@@ -2,12 +2,121 @@
     x:Class="TrackingAndControlFlight_v1_0809.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:local="using:TrackingAndControlFlight_v1_0809"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <CollectionViewSource x:Name="DeviceListSource"/>
 
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="BackgroundDisplay" Margin="0,0,-991,-100" >
+        <Maps:MapControl x:Name="myMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Height="730" Width="1260"  >
+        </Maps:MapControl>
+
+        <!--<Slider x:Name="slider" Margin="679,159,1072,561" Height="100" ValueChanged="slider_ValueChanged" Maximum="1200" Minimum="0" />-->
+        <!--<Slider x:Name="slider_test" Margin="679,316,1072,404" Height="100" SmallChange="1" ValueChanged="slider_ValueChanged" Maximum="100" />
+        <Slider x:Name="slider_test1" Margin="679,480,1072,240" Height="100" SmallChange="1" ValueChanged="slider_ValueChanged" Maximum="100" />-->
+        <!--Map có kích thước 1366 x 730-->
+        <!--Màn hình kích thuwos 1366 x 768-->
+        <!--Khi nhận xong không cần hiện dữ liệu nên bỏ dòng sau-->
+        <!--
+        <TextBox x:Name="tbOutputText" HorizontalAlignment="Left" Margin="700,220,-12,-18" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="70" Width="666" Foreground="{ThemeResource AppBarToggleButtonCheckedPressedBorderThemeBrush}" />
+        -->
+        <!--Hiện khoảng cách-->
+        <!--Ta hiện khoảng cách trên đường thẳng-->
+
+
+        <!--Adjust-->
+
+        <Slider x:Name="slider_AdjTime" HorizontalAlignment="Left" Margin="488,682,0,0" VerticalAlignment="Top" Width="437" ValueChanged="adjTime_Click" Minimum="0" Maximum="100"/>
+        <TextBlock x:Name="tblock_Start_Timer" HorizontalAlignment="Left" FontSize="16" Margin="488,655,0,0" Foreground="Red" Text="" VerticalAlignment="Top" Height="25" Width="auto"/>
+        <TextBlock x:Name="tblock_End_Timer" HorizontalAlignment="Left" FontSize="18" Margin="853,655,0,0" Foreground="Red" Text="" VerticalAlignment="Top" Height="25" Width="auto"/>
+        <TextBlock x:Name="tblock_Current_Timer" HorizontalAlignment="Left" FontSize="18" Margin="679,655,0,0" Foreground="Red" Text="" VerticalAlignment="Top" Height="25" Width="auto"/>
+
+
+        <!--
+        <TextBox x:Name="TestText" HorizontalAlignment="Left" Height="41" Margin="750,300,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        -->
+        <!--_____________________________________________________-->
+
+
+
+
+
+        <!--
+        <canvas:CanvasControl Draw="CanvasControl_Draw" />-->
+        <!--Receive Data-->
+
+
+        <!--
+        <FlipView x:Name="flipView" HorizontalAlignment="Left" Height="138" Margin="177,370,0,0" VerticalAlignment="Top" Width="254"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="99" Margin="529,409,0,0" VerticalAlignment="Top" Width="238"/>
+        -->
+        <!--Input string-->
+        <TextBlock x:Name="tblock_Position" HorizontalAlignment="Left" FontSize="20" Foreground="Red" Margin="80,10,0,0" TextWrapping="Wrap" Text="Position: " VerticalAlignment="Top" Height="30" Width="80"/>
+        <!--Input Position-->
+        <TextBox x:Name="tb_Position" HorizontalAlignment="Left" Margin="170,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="30" Width="231" Background="Aqua" KeyDown="tb_Position_KeyDown"/>
+
+        <!--Show Latitude Longtitude-->
+        <TextBlock x:Name="tblock_LatAndLon" HorizontalAlignment="Left" FontSize="16" Foreground="Red" Margin="900,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="30" Width="auto"/>
+        <!--Show Zoom level-->
+        <TextBlock x:Name="tblock_ZoomLevel" HorizontalAlignment="Left" FontSize="16" Foreground="Red" Margin="840,10,0,0" TextWrapping="Wrap" Text="12.345" VerticalAlignment="Top" Height="30" Width="auto"/>
+        <!--Show time from GPS-->
+
+        <!--Get Coordinates button-->
+
+        <!-- Choose read com or read file button-->
+
+        <!--Add menu bar-->
+
+
+        <!--list of com-->
+        <!--UART-->
+        <ListBox x:Name="ConnectDevices" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5"
+                        ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" ItemsSource="{Binding Source={StaticResource DeviceListSource}}" Background="Green" Margin="628,270,0,0" Height="auto" Width="auto">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Id}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--*******************************************************************************-->
+        <Button x:Name="ShowButton" ToolTipService.ToolTip="Menu" Background="YellowGreen" VerticalAlignment="Top" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="449,10,0,0">
+            <Button.Content>
+                <FontIcon x:Name="icon_menu" FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Margin="0,5,0,0"/>
+            </Button.Content>
+            <Button.Flyout>
+                <MenuFlyout Placement= "Right">
+                    <MenuFlyoutItem x:Name="bt_Play" Text = "Play" Click="bt_play_Click"/>
+                    <MenuFlyoutItem x:Name="bt_Pause" Text = "Pause" Click="bt_pause_click"/>
+                    <MenuFlyoutSubItem x:Name="bt_Speed" Text="Speed">
+                        <MenuFlyoutItem Text="Increase" Click="bt_speed_inc_click"/>
+                        <MenuFlyoutItem Text="Decrease" Click="bt_speed_dec_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem Text="Open .txt file" Click="bt_open_file_click"/>
+                    <MenuFlyoutSubItem Text="Screen">
+                        <MenuFlyoutItem Text="One Screen" Click="bt_one_sceen_click"/>
+                        <MenuFlyoutItem Text="Two Screen" Click="bt_two_sceen_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem Text="Get Position" Click="bt_get_position_click"/>
+                    <MenuFlyoutItem Text="Zoom Nomal" Click="bt_zoom_nomal_click"/>
+                    <MenuFlyoutSubItem Text="AutoZoom">
+                        <MenuFlyoutItem Text="On" Click="bt_autoZoom_on_click"/>
+                        <MenuFlyoutItem Text="Off" Click="bt_autoZoom_off_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem x:Name="bt_List_Com" Click="bt_list_com_click" Text="List COM">
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSubItem Text="Device">
+                        <MenuFlyoutItem x:Name="bt_Connect" Text="Connect" Click="bt_device_connect_click"/>
+                        <MenuFlyoutItem x:Name="bt_DisConnect" IsEnabled="False" Text="DisConnect" Click="bt_device_disconnect_click"/>
+                    </MenuFlyoutSubItem>
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
     </Grid>
 </Page>
